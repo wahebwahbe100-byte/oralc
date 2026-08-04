@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1100">
+<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#e9e0d3"/><stop offset="1" stop-color="#b8a38f"/></linearGradient></defs>
+<rect width="900" height="1100" fill="url(#g)"/><circle cx="450" cy="380" r="170" fill="#563628" opacity=".14"/><path d="M165 1030c26-252 126-386 285-386s259 134 285 386" fill="#563628" opacity=".18"/><text x="450" y="500" text-anchor="middle" font-family="Georgia,serif" font-size="170" fill="#563628">AS</text><text x="450" y="940" text-anchor="middle" font-family="Arial,sans-serif" font-size="28" letter-spacing="6" fill="#563628">ORALCHIRURGIE</text>
+</svg>
