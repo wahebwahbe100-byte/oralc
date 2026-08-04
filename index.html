@@ -71,7 +71,7 @@ h1 em,h2 em{font-weight:500;color:var(--brown)}
 .hero-badge span{display:block;font-family:var(--serif);font-size:30px;letter-spacing:.18em}
 .hero-badge small{opacity:.72}
 .hero-strip{grid-column:1/-1;height:54px;display:flex;align-items:center;gap:50px;padding:0 4vw;background:var(--brown-deep);color:#fff;overflow:hidden;white-space:nowrap;text-transform:uppercase;letter-spacing:.09em;font-size:11px}
-.hero-strip span:before,.hero-strip a:before{content:"✦";margin-right:18px;color:#c8a98f}
+.hero-strip span:before,.hero-strip a:before{content:"";display:inline-block;width:12px;height:12px;margin-right:18px;flex:0 0 12px;background:#c8a98f;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M12 1.8c.62 5.96 4.24 9.58 10.2 10.2-5.96.62-9.58 4.24-10.2 10.2C11.38 16.24 7.76 12.62 1.8 12 7.76 11.38 11.38 7.76 12 1.8Z'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M12 1.8c.62 5.96 4.24 9.58 10.2 10.2-5.96.62-9.58 4.24-10.2 10.2C11.38 16.24 7.76 12.62 1.8 12 7.76 11.38 11.38 7.76 12 1.8Z'/%3E%3C/svg%3E") center/contain no-repeat}
 .hero-strip a{display:inline-flex;align-items:center;transition:opacity .2s ease}
 .hero-strip a:hover{opacity:.72}
 .hero-strip a:focus-visible{outline:2px solid #fff;outline-offset:4px}
@@ -109,7 +109,7 @@ h1 em,h2 em{font-weight:500;color:var(--brown)}
 .feature p{max-width:670px;font-size:18px;opacity:.78}
 .feature-dark h2 em{color:#d7b89d}
 .check-list{list-style:none;padding:0;margin:18px 0 36px;display:grid;gap:9px}
-.check-list li:before{content:"↳";margin-right:12px}
+.check-list li{position:relative;padding-left:24px}.check-list li:before{content:"";position:absolute;left:0;top:.42em;width:14px;height:14px;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='black' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 5v8a4 4 0 0 0 4 4h10m-5-5 5 5-5 5'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='black' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 5v8a4 4 0 0 0 4 4h10m-5-5 5 5-5 5'/%3E%3C/svg%3E") center/contain no-repeat}
 .feature-dark .button-light{margin-top:4px}
 
 .numbers{
@@ -596,11 +596,14 @@ h1 em,h2 em{font-weight:500;color:var(--brown)}
   letter-spacing:-.05em;
 }
 .doctolib-float__brand::before{
-  content:"⌁";
+  content:"";
   display:inline-block;
-  margin-right:2px;
-  font-size:15px;
-  font-style:normal;
+  width:15px;
+  height:10px;
+  margin-right:3px;
+  background:currentColor;
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 16'%3E%3Cpath fill='none' stroke='black' stroke-linecap='round' stroke-width='2.4' d='M2 9c3.2-6 6.4-6 9.6 0s6.4 6 10.4 0'/%3E%3C/svg%3E") center/contain no-repeat;
+  mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 16'%3E%3Cpath fill='none' stroke='black' stroke-linecap='round' stroke-width='2.4' d='M2 9c3.2-6 6.4-6 9.6 0s6.4 6 10.4 0'/%3E%3C/svg%3E") center/contain no-repeat;
   transform:translateY(1px);
 }
 @media(max-width:600px){
@@ -1240,6 +1243,197 @@ h1,h2,h3,p,li,address,
   .service-card h3{overflow-wrap:anywhere}
 }
 
+
+/* ===== Refined treatment cards: Unser Behandlungsspektrum ===== */
+#oralchirurgie.service-grid{
+  position:relative;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:clamp(16px,1.8vw,28px);
+  isolation:isolate;
+}
+#oralchirurgie.service-grid::before{
+  content:"";
+  position:absolute;
+  inset:clamp(48px,6vw,90px) 2vw auto;
+  height:clamp(260px,28vw,430px);
+  z-index:-1;
+  pointer-events:none;
+  background:radial-gradient(circle at 50% 20%,rgba(184,163,143,.20),transparent 68%);
+  filter:blur(18px);
+}
+#oralchirurgie .section-title{
+  grid-column:1/-1;
+  margin-bottom:clamp(30px,4vw,58px);
+}
+#oralchirurgie .section-title h2{max-width:1050px}
+#oralchirurgie .service-card{
+  min-height:clamp(330px,29vw,420px);
+  padding:clamp(30px,3.1vw,48px);
+  border:1px solid rgba(86,54,40,.17);
+  border-radius:6px;
+  overflow:hidden;
+  isolation:isolate;
+  background:linear-gradient(145deg,rgba(255,255,255,.78),rgba(246,241,233,.76)),var(--cream);
+  box-shadow:0 12px 36px rgba(52,35,29,.055);
+  transition:transform .35s cubic-bezier(.22,.75,.2,1),box-shadow .35s ease,border-color .35s ease;
+}
+#oralchirurgie .service-card:nth-of-type(odd){border-right:1px solid rgba(86,54,40,.17)}
+#oralchirurgie .service-card::before{
+  content:"";
+  position:absolute;
+  inset:0 auto 0 0;
+  width:4px;
+  z-index:-1;
+  background:var(--brown);
+  transform:scaleY(0);
+  transform-origin:bottom;
+  transition:transform .35s cubic-bezier(.22,.75,.2,1);
+}
+#oralchirurgie .service-card::after{
+  content:"";
+  position:absolute;
+  width:210px;
+  height:210px;
+  right:-105px;
+  bottom:-125px;
+  z-index:-1;
+  border:1px solid rgba(86,54,40,.11);
+  border-radius:50%;
+  transition:transform .45s cubic-bezier(.22,.75,.2,1),border-color .35s ease;
+}
+#oralchirurgie .service-card > span{
+  width:52px;
+  height:52px;
+  display:grid;
+  place-items:center;
+  border:1px solid rgba(86,54,40,.20);
+  border-radius:50%;
+  background:rgba(255,255,255,.54);
+  color:var(--brown);
+  font-family:var(--sans);
+  font-size:12px;
+  font-weight:600;
+  letter-spacing:.12em;
+  opacity:1;
+  transition:background-color .3s ease,color .3s ease,border-color .3s ease;
+}
+#oralchirurgie .service-card h3{
+  max-width:85%;
+  margin:clamp(48px,5vw,78px) 0 18px;
+  font-size:clamp(30px,3.15vw,50px);
+  line-height:1.04;
+  overflow-wrap:normal;
+  word-break:normal;
+  hyphens:auto;
+  transition:color .3s ease,transform .35s cubic-bezier(.22,.75,.2,1);
+}
+#oralchirurgie .service-card p{
+  max-width:560px;
+  margin:0;
+  color:rgba(41,37,34,.70);
+  font-size:clamp(15px,1.15vw,18px);
+  line-height:1.65;
+  opacity:1;
+}
+#oralchirurgie .service-card > a{
+  right:clamp(24px,2.5vw,38px);
+  top:clamp(28px,3vw,44px);
+  width:56px;
+  height:56px;
+  border-color:rgba(86,54,40,.22);
+  background:var(--brown);
+  color:#fff;
+  box-shadow:0 10px 24px rgba(86,54,40,.18);
+  transition:transform .3s cubic-bezier(.22,.75,.2,1),background-color .3s ease,box-shadow .3s ease;
+}
+#oralchirurgie .service-card:hover,
+#oralchirurgie .service-card:focus-within{
+  transform:translateY(-7px);
+  border-color:rgba(86,54,40,.34);
+  box-shadow:0 24px 58px rgba(52,35,29,.12);
+}
+#oralchirurgie .service-card:hover::before,
+#oralchirurgie .service-card:focus-within::before{transform:scaleY(1)}
+#oralchirurgie .service-card:hover::after,
+#oralchirurgie .service-card:focus-within::after{
+  transform:scale(1.18) translate(-8px,-8px);
+  border-color:rgba(86,54,40,.20);
+}
+#oralchirurgie .service-card:hover > span,
+#oralchirurgie .service-card:focus-within > span{
+  background:var(--brown);
+  border-color:var(--brown);
+  color:#fff;
+}
+#oralchirurgie .service-card:hover h3,
+#oralchirurgie .service-card:focus-within h3{
+  color:var(--brown);
+  transform:translateX(5px);
+}
+#oralchirurgie .service-card:hover > a,
+#oralchirurgie .service-card:focus-within > a{
+  background:var(--ink);
+  transform:rotate(45deg) scale(1.04);
+  box-shadow:0 14px 30px rgba(41,37,34,.22);
+}
+#oralchirurgie .service-card > a:focus-visible{
+  outline:3px solid rgba(86,54,40,.35);
+  outline-offset:4px;
+}
+#oralchirurgie .service-grid-actions{
+  grid-column:1/-1;
+  padding-top:clamp(18px,2.5vw,34px);
+}
+@media(max-width:860px){
+  #oralchirurgie.service-grid{grid-template-columns:1fr;gap:16px}
+  #oralchirurgie .service-card{min-height:310px}
+  #oralchirurgie .service-card:nth-of-type(odd){border-right:1px solid rgba(86,54,40,.17)}
+}
+@media(max-width:600px){
+  #oralchirurgie .section-title{margin-bottom:26px}
+  #oralchirurgie .service-card{min-height:285px;padding:28px 24px 32px;border-radius:4px}
+  #oralchirurgie .service-card > span{width:46px;height:46px;font-size:11px}
+  #oralchirurgie .service-card > a{top:27px;right:23px;width:48px;height:48px}
+  #oralchirurgie .service-card h3{max-width:100%;margin:44px 0 16px;padding-right:6px;font-size:clamp(30px,9.2vw,40px)}
+  #oralchirurgie .service-card p{font-size:15px}
+}
+@media(prefers-reduced-motion:reduce){
+  #oralchirurgie .service-card,
+  #oralchirurgie .service-card::before,
+  #oralchirurgie .service-card::after,
+  #oralchirurgie .service-card > span,
+  #oralchirurgie .service-card h3,
+  #oralchirurgie .service-card > a{transition:none}
+  #oralchirurgie .service-card:hover,
+  #oralchirurgie .service-card:focus-within{transform:none}
+}
+
+
+/* ===== Consistent SVG icons (prevents emoji rendering on mobile) ===== */
+.ui-icon{
+  width:1em;
+  height:1em;
+  display:block;
+  flex:0 0 auto;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.9;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  pointer-events:none;
+}
+.button .ui-icon,
+.text-link .ui-icon,
+.location-footer__button .ui-icon{
+  display:inline-block;
+  vertical-align:-.16em;
+  margin-left:.42em;
+}
+.text-link span[aria-hidden="true"]{display:inline-flex;align-items:center}
+#oralchirurgie .service-card > a .ui-icon{width:22px;height:22px}
+.slider-controls button{display:grid;place-items:center}
+.slider-controls button .ui-icon{width:20px;height:20px;margin:auto}
+
 </style>
 </head>
 <body>
@@ -1289,7 +1483,7 @@ h1,h2,h3,p,li,address,
         <p class="hero-lead">Fachzahnarzt für Oralchirurgie & Implantologie – schonende Eingriffe, moderne Technik und ein besonderes Gespür für Angstpatienten.</p>
         <div class="hero-actions">
           <a class="button button-dark" href="tel:+493029490423">Jetzt anrufen</a>
-          <a class="text-link" href="#praxis">Praxis entdecken <span>↘</span></a>
+          <a class="text-link" href="#praxis">Praxis entdecken <span aria-hidden="true"><svg class="ui-icon ui-icon--arrow-down-right" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 7l10 10M8 17h9V8"/></svg></span></a>
         </div>
       </div>
       <div class="hero-media reveal">
@@ -1318,7 +1512,7 @@ h1,h2,h3,p,li,address,
       <div class="intro-body reveal">
         <p>In unserer Fachpraxis verbinden wir langjährige Erfahrung mit moderner, minimalinvasiver Technik. Unser Anspruch ist eine Behandlung, die fachlich präzise, menschlich aufmerksam und so angenehm wie möglich ist.</p>
         <p>Dr. Ahmed Saeed und das ORALC-Team begleiten Sie von der ersten Beratung bis zur Nachsorge – besonders einfühlsam bei Zahnarztangst und auf Wunsch mit modernen Sedierungsverfahren.</p>
-        <a class="button button-dark intro-cta" href="ueber-uns.html">ORALC kennenlernen&nbsp; <span aria-hidden="true">→</span></a>
+        <a class="button button-dark intro-cta" href="ueber-uns.html">ORALC kennenlernen&nbsp; <svg class="ui-icon ui-icon--arrow-right" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
       </div>
     </section>
 
@@ -1371,19 +1565,19 @@ h1,h2,h3,p,li,address,
         <h2>Oralchirurgie mit <em>ruhiger Hand</em> und moderner Technik.</h2>
       </div>
       <article class="service-card reveal">
-        <span>01</span><h3>Weisheitszahn-Entfernung</h3><p>Schonende Entfernung auch bei schwierig liegenden oder retinierten Zähnen.</p><a href="#kontakt" aria-label="Mehr zur Weisheitszahnentfernung">↗</a>
+        <span>01</span><h3>Weisheitszahn-Entfernung</h3><p>Schonende Entfernung auch bei schwierig liegenden oder retinierten Zähnen.</p><a href="/unsere-leistungen.html" aria-label="Mehr zur Weisheitszahnentfernung"><svg class="ui-icon ui-icon--arrow-up-right" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
       </article>
       <article class="service-card reveal">
-        <span>02</span><h3>Zahnextraktionen</h3><p>Professionelle Zahnentfernung mit minimalinvasiven chirurgischen Techniken.</p><a href="#kontakt" aria-label="Mehr zu Zahnextraktionen">↗</a>
+        <span>02</span><h3>Zahnextraktionen</h3><p>Professionelle Zahnentfernung mit minimalinvasiven chirurgischen Techniken.</p><a href="/unsere-leistungen.html" aria-label="Mehr zu Zahnextraktionen"><svg class="ui-icon ui-icon--arrow-up-right" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
       </article>
       <article class="service-card reveal">
-        <span>03</span><h3>Wurzelspitzenresektion</h3><p>Zahnerhalt durch präzise mikrochirurgische Behandlung der Wurzelspitze.</p><a href="#kontakt" aria-label="Mehr zur Wurzelspitzenresektion">↗</a>
+        <span>03</span><h3>Wurzelspitzenresektion</h3><p>Zahnerhalt durch präzise mikrochirurgische Behandlung der Wurzelspitze.</p><a href="/unsere-leistungen.html" aria-label="Mehr zur Wurzelspitzenresektion"><svg class="ui-icon ui-icon--arrow-up-right" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
       </article>
       <article class="service-card reveal">
-        <span>04</span><h3>Zysten & Abszesse</h3><p>Sichere Diagnostik und Behandlung von Entzündungen und gutartigen Veränderungen.</p><a href="#kontakt" aria-label="Mehr zu Zysten und Abszessen">↗</a>
+        <span>04</span><h3>Zysten- &amp; Abszessbehandlung</h3><p>Sichere Diagnostik und Behandlung von Entzündungen und gutartigen Veränderungen.</p><a href="/unsere-leistungen.html" aria-label="Mehr zu Zysten und Abszessen"><svg class="ui-icon ui-icon--arrow-up-right" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
       </article>
       <div class="service-grid-actions reveal">
-        <a class="button" href="unsere-leistungen.html">Mehr erfahren&nbsp; <span aria-hidden="true">→</span></a>
+        <a class="button" href="/unsere-leistungen.html">Mehr erfahren&nbsp; <svg class="ui-icon ui-icon--arrow-right" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
       </div>
     </section>
 
@@ -1431,7 +1625,7 @@ h1,h2,h3,p,li,address,
       </div>
       <div class="testimonial-meta">
         <span>Patientenstimmen</span>
-        <div class="slider-controls"><button class="prev" aria-label="Vorherige Bewertung">←</button><button class="next" aria-label="Nächste Bewertung">→</button></div>
+        <div class="slider-controls"><button class="prev" aria-label="Vorherige Bewertung"><svg class="ui-icon ui-icon--arrow-left" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M19 12H5m6 6-6-6 6-6"/></svg></button><button class="next" aria-label="Nächste Bewertung"><svg class="ui-icon ui-icon--arrow-right" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>
       </div>
     </section>
   </main>
@@ -1472,7 +1666,7 @@ h1,h2,h3,p,li,address,
 
         <div class="location-footer__actions">
           <a class="location-footer__button location-footer__button--light" href="https://www.doctolib.de/zahnarztpraxis/berlin/oralchirurgie-warschauer-strasse-ihre-fachzahnaerzte-fuer-oralchirurgie" target="_blank" rel="noopener">Online-Termin buchen</a>
-          <a class="location-footer__button location-footer__button--outline" href="https://maps.google.com/?q=Warschauer+Str.+38,+10243+Berlin" target="_blank" rel="noopener">Route planen <span aria-hidden="true">↗</span></a>
+          <a class="location-footer__button location-footer__button--outline" href="https://maps.google.com/?q=Warschauer+Str.+38,+10243+Berlin" target="_blank" rel="noopener">Route planen <svg class="ui-icon ui-icon--arrow-up-right" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
         </div>
 
         <nav class="location-footer__legal" aria-label="Rechtliche Links">
