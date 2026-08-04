@@ -1434,7 +1434,296 @@ h1,h2,h3,p,li,address,
 .slider-controls button{display:grid;place-items:center}
 .slider-controls button .ui-icon{width:20px;height:20px;margin:auto}
 
+
+/* ===== Unified button feedback + smooth scroll reveals (no glow) ===== */
+button,
+.button,
+.header-cta,
+.text-link,
+.location-footer__button,
+.service-card > a,
+.doctolib-float__toggle,
+.doctolib-float__link{
+  -webkit-tap-highlight-color:transparent;
+  cursor:pointer;
+  box-shadow:none!important;
+  text-shadow:none!important;
+  transition:
+    transform .28s cubic-bezier(.22,.75,.2,1),
+    background-color .28s ease,
+    color .28s ease,
+    border-color .28s ease,
+    opacity .28s ease;
+}
+
+.doctolib-float{filter:none!important}
+
+button .ui-icon,
+.button .ui-icon,
+.header-cta .ui-icon,
+.text-link .ui-icon,
+.location-footer__button .ui-icon,
+.service-card > a .ui-icon{
+  transition:transform .28s cubic-bezier(.22,.75,.2,1);
+}
+
+@media(hover:hover) and (pointer:fine){
+  button:hover,
+  .button:hover,
+  .header-cta:hover,
+  .text-link:hover,
+  .location-footer__button:hover,
+  .doctolib-float__toggle:hover,
+  .doctolib-float__link:hover{
+    transform:translateY(-3px);
+  }
+
+  button:hover .ui-icon,
+  .button:hover .ui-icon,
+  .header-cta:hover .ui-icon,
+  .text-link:hover .ui-icon,
+  .location-footer__button:hover .ui-icon,
+  .service-card > a:hover .ui-icon{
+    transform:scale(1.1);
+  }
+}
+
+button:active,
+.button:active,
+.header-cta:active,
+.text-link:active,
+.location-footer__button:active,
+.service-card > a:active,
+.doctolib-float__toggle:active,
+.doctolib-float__link:active{
+  transform:translateY(0) scale(.97);
+  transition-duration:.1s;
+}
+
+button:focus-visible,
+.button:focus-visible,
+.header-cta:focus-visible,
+.text-link:focus-visible,
+.location-footer__button:focus-visible,
+.service-card > a:focus-visible,
+.doctolib-float__toggle:focus-visible,
+.doctolib-float__link:focus-visible{
+  outline:2px solid currentColor;
+  outline-offset:4px;
+  box-shadow:none!important;
+}
+
+/* Keep reveal content visible when JavaScript is unavailable. */
+.reveal{
+  opacity:1;
+  transform:none;
+}
+
+html.motion-ready .reveal{
+  opacity:0;
+  transform:translate3d(0,34px,0);
+  transition:
+    opacity .78s ease-out,
+    transform .88s cubic-bezier(.22,1,.36,1);
+  transition-delay:var(--reveal-delay,0ms);
+  will-change:opacity,transform;
+}
+
+html.motion-ready .reveal.visible{
+  opacity:1;
+  transform:translate3d(0,0,0);
+  will-change:auto;
+}
+
+@media(max-width:600px){
+  html.motion-ready .reveal{transform:translate3d(0,24px,0)}
+}
+
+@media(prefers-reduced-motion:reduce){
+  button,
+  .button,
+  .header-cta,
+  .text-link,
+  .location-footer__button,
+  .service-card > a,
+  .doctolib-float__toggle,
+  .doctolib-float__link,
+  button .ui-icon,
+  .button .ui-icon,
+  .header-cta .ui-icon,
+  .text-link .ui-icon,
+  .location-footer__button .ui-icon,
+  .service-card > a .ui-icon{
+    transition:none!important;
+  }
+  html.motion-ready .reveal{
+    opacity:1;
+    transform:none;
+    transition:none;
+  }
+}
+
+
+
+/* ===== Reference-style motion: directional section reveals + tactile buttons ===== */
+:root{
+  --motion-ease:cubic-bezier(.22,1,.36,1);
+  --motion-fast:260ms;
+  --motion-slow:920ms;
+}
+
+/* Clean, tactile button movement without glow. */
+.button,
+.header-cta,
+.location-footer__button{
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+  transform-origin:center;
+  box-shadow:none!important;
+}
+.button::before,
+.header-cta::before,
+.location-footer__button::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:-1;
+  pointer-events:none;
+  background:rgba(0,0,0,.10);
+  transform:translate3d(-102%,0,0);
+  transition:transform .42s var(--motion-ease);
+}
+@media(hover:hover) and (pointer:fine){
+  .button:hover,
+  .header-cta:hover,
+  .location-footer__button:hover{
+    transform:translateY(-2px) scale(1.015);
+  }
+  .button:hover::before,
+  .header-cta:hover::before,
+  .location-footer__button:hover::before{
+    transform:translate3d(0,0,0);
+  }
+  .button:hover .ui-icon,
+  .header-cta:hover .ui-icon,
+  .location-footer__button:hover .ui-icon,
+  .text-link:hover .ui-icon{
+    transform:translateX(5px);
+  }
+}
+.button:active,
+.header-cta:active,
+.location-footer__button:active,
+button:active,
+.service-card > a:active,
+.doctolib-float__toggle:active,
+.doctolib-float__link:active{
+  transform:translateY(1px) scale(.975)!important;
+}
+
+/* Remove the older elevated-card glow while keeping borders and movement. */
+.service-card,
+.service-card:hover,
+.service-card:focus-within,
+.intro-cta,
+.intro-cta:hover,
+.service-grid-actions .button,
+.service-grid-actions .button:hover,
+.slider-controls button,
+.slider-controls button:hover{
+  box-shadow:none!important;
+  filter:none!important;
+}
+
+/* Reveal foundation: no blur, no glow, only opacity and movement. */
+html.motion-ready .reveal{
+  opacity:0;
+  transform:translate3d(0,52px,0);
+  clip-path:inset(0 0 9% 0);
+  transition:
+    opacity .72s ease-out,
+    transform var(--motion-slow) var(--motion-ease),
+    clip-path var(--motion-slow) var(--motion-ease);
+  transition-delay:var(--reveal-delay,0ms);
+  will-change:opacity,transform,clip-path;
+}
+html.motion-ready .reveal.reveal-left{
+  transform:translate3d(-64px,0,0);
+  clip-path:inset(0 8% 0 0);
+}
+html.motion-ready .reveal.reveal-right{
+  transform:translate3d(64px,0,0);
+  clip-path:inset(0 0 0 8%);
+}
+html.motion-ready .reveal.reveal-scale{
+  transform:translate3d(0,26px,0) scale(.96);
+  clip-path:inset(5% 5% 5% 5%);
+}
+html.motion-ready .reveal.visible,
+html.motion-ready .reveal.reveal-left.visible,
+html.motion-ready .reveal.reveal-right.visible,
+html.motion-ready .reveal.reveal-scale.visible{
+  opacity:1;
+  transform:translate3d(0,0,0) scale(1);
+  clip-path:inset(0 0 0 0);
+  will-change:auto;
+}
+
+/* Images settle gently into place after their container appears. */
+.reveal-media{overflow:hidden}
+.reveal-media > img,
+.reveal-media > video,
+.reveal-media picture img{
+  transform:scale(1.065);
+  transition:transform 1.35s var(--motion-ease);
+}
+.reveal-media.visible > img,
+.reveal-media.visible > video,
+.reveal-media.visible picture img{
+  transform:scale(1);
+}
+
+/* Cards use a compact stagger like the reference page. */
+.reveal-stagger .reveal{
+  transition-delay:calc(var(--reveal-delay,0ms) + 40ms);
+}
+
+@media(max-width:860px){
+  html.motion-ready .reveal,
+  html.motion-ready .reveal.reveal-left,
+  html.motion-ready .reveal.reveal-right{
+    transform:translate3d(0,38px,0);
+    clip-path:inset(0 0 7% 0);
+  }
+  html.motion-ready .reveal.visible,
+  html.motion-ready .reveal.reveal-left.visible,
+  html.motion-ready .reveal.reveal-right.visible{
+    transform:translate3d(0,0,0);
+    clip-path:inset(0);
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .button::before,
+  .header-cta::before,
+  .location-footer__button::before{display:none}
+  html.motion-ready .reveal,
+  html.motion-ready .reveal.reveal-left,
+  html.motion-ready .reveal.reveal-right,
+  html.motion-ready .reveal.reveal-scale{
+    opacity:1;
+    transform:none;
+    clip-path:none;
+    transition:none;
+  }
+  .reveal-media > img,
+  .reveal-media > video,
+  .reveal-media picture img{transform:none;transition:none}
+}
+
 </style>
+<script>document.documentElement.classList.add('motion-ready');</script>
 </head>
 <body>
   <div class="page-noise" aria-hidden="true"></div>
@@ -1718,15 +2007,71 @@ nav.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
   menuButton.setAttribute('aria-expanded', 'false');
 }));
 
-const revealObserver = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
+// Reference-style scroll animation: alternate text direction, zoom media, stagger cards.
+const revealSections = document.querySelectorAll('main > section, footer > section');
+const mediaSelector = [
+  '.hero-media', '.feature-media', '.expert-portrait', '.gallery figure',
+  '.location-footer__map', '.location-footer__map-link', '.emergency-media'
+].join(',');
+const cardSelector = '.service-card, .number-card, .contact-card, .qualifications span';
+
+revealSections.forEach((section, sectionIndex) => {
+  const children = [...section.children].filter(element => !element.matches('script, style'));
+  const hasCards = children.some(element => element.matches(cardSelector));
+  if (hasCards) section.classList.add('reveal-stagger');
+
+  children.forEach((element, index) => {
+    element.classList.add('reveal');
+    element.classList.remove('reveal-left', 'reveal-right', 'reveal-scale', 'reveal-media');
+
+    if (element.matches(mediaSelector) || element.querySelector(':scope > img, :scope > video, :scope > picture')) {
+      element.classList.add('reveal-scale', 'reveal-media');
+    } else if (element.matches(cardSelector)) {
+      element.classList.add('reveal-scale');
+    } else {
+      const fromLeft = (sectionIndex + index) % 2 === 0;
+      element.classList.add(fromLeft ? 'reveal-left' : 'reveal-right');
+    }
+
+    const delay = Math.min(index, 6) * (element.matches(cardSelector) ? 85 : 70);
+    element.style.setProperty('--reveal-delay', `${delay}ms`);
+  });
+});
+
+// Existing nested reveal elements receive a suitable motion variant too.
+document.querySelectorAll('.reveal').forEach((element, index) => {
+  if (!element.classList.contains('reveal-left') &&
+      !element.classList.contains('reveal-right') &&
+      !element.classList.contains('reveal-scale')) {
+    if (element.matches(mediaSelector) || element.querySelector(':scope > img, :scope > video, :scope > picture')) {
+      element.classList.add('reveal-scale', 'reveal-media');
+    } else if (element.matches(cardSelector)) {
+      element.classList.add('reveal-scale');
+    } else {
+      element.classList.add(index % 2 ? 'reveal-right' : 'reveal-left');
+    }
+  }
+});
+
+const revealElements = document.querySelectorAll('.reveal');
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+if (reduceMotion || !('IntersectionObserver' in window)) {
+  revealElements.forEach(element => element.classList.add('visible'));
+} else {
+  const revealObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
       entry.target.classList.add('visible');
       revealObserver.unobserve(entry.target);
-    }
+    });
+  }, {
+    threshold: .12,
+    rootMargin: '0px 0px -10% 0px'
   });
-}, { threshold: .12 });
-document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+  revealElements.forEach(element => revealObserver.observe(element));
+}
 
 const countObserver = new IntersectionObserver(entries => {
   entries.forEach(entry => {
