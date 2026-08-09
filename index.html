@@ -1772,25 +1772,58 @@ body *{
 
 
 
-/* ===== Google reviews: previous ORALC testimonial appearance + UI Kit bridge ===== */
+/* ===== Google reviews: old ORALC appearance + reliable Places UI Kit fallback ===== */
 .google-reviews .google-review-ui-source{
-  position:absolute;
-  left:-10000px;
-  top:0;
-  width:390px;
-  height:560px;
-  overflow:hidden;
-  opacity:.001;
-  pointer-events:none;
+  display:none;
+  grid-column:2;
+  width:100%;
+  max-width:940px;
+  min-height:360px;
+}
+.google-reviews.is-ui-kit-fallback .testimonial-slider{display:none}
+.google-reviews.is-ui-kit-fallback .google-review-ui-source{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(300px,400px);
+  align-items:start;
+  gap:clamp(28px,5vw,72px);
+}
+.google-review-ui-copy{
+  font-family:var(--serif);
+  font-size:clamp(34px,4.2vw,66px);
+  line-height:1.13;
+  letter-spacing:-.03em;
+  color:rgba(41,37,34,.9);
+}
+.google-review-ui-copy p{margin:0}
+.google-review-ui-copy small{
+  display:block;
+  margin-top:24px;
+  font-family:var(--sans);
+  font-size:12px;
+  line-height:1.5;
+  letter-spacing:.02em;
+  color:rgba(41,37,34,.62);
+}
+.google-review-ui-panel{
+  width:100%;
+  max-width:400px;
+  min-height:360px;
+}
+.google-review-ui-status{
+  margin:0 0 12px;
+  font-family:var(--sans);
+  font-size:12px;
+  line-height:1.45;
+  color:rgba(41,37,34,.62);
 }
 gmp-place-details#oralc-place-details{
   display:block;
   width:100%;
-  height:100%;
+  min-height:340px;
   color-scheme:light;
-  border:0;
+  border:1px solid rgba(86,54,40,.18);
   border-radius:0;
-  background:transparent;
+  background:#f8f4ed;
   --gmp-mat-color-surface:#f8f4ed;
   --gmp-mat-color-on-surface:#292522;
   --gmp-mat-color-on-surface-variant:#6b625c;
@@ -1802,22 +1835,10 @@ gmp-place-details#oralc-place-details{
   --gmp-mat-color-outline-decorative:#d9cec3;
   --gmp-mat-font-family:'DM Sans',Arial,sans-serif;
 }
-.google-reviews.is-ui-kit-fallback .testimonial-slider{display:none}
-.google-reviews.is-ui-kit-fallback .google-review-ui-source{
-  position:relative;
-  left:auto;
-  top:auto;
-  grid-column:2;
-  width:min(100%,920px);
-  height:480px;
-  overflow:auto;
-  opacity:1;
-  pointer-events:auto;
-}
 .google-reviews.is-ui-kit-fallback .slider-controls{display:none}
 .google-reviews .google-review-status-link{
   display:inline-flex;
-  margin-top:24px;
+  margin-top:18px;
   min-height:42px;
   align-items:center;
   padding:0 16px;
@@ -1828,12 +1849,16 @@ gmp-place-details#oralc-place-details{
   text-transform:uppercase;
 }
 .google-reviews .google-review-status-link:hover{background:var(--ink);color:#fff}
-@media(max-width:600px){
+@media(max-width:820px){
   .google-reviews.is-ui-kit-fallback .google-review-ui-source{
-    grid-column:1;
-    width:100%;
-    height:500px;
+    grid-template-columns:1fr;
   }
+  .google-review-ui-panel{max-width:440px}
+}
+@media(max-width:600px){
+  .google-reviews .google-review-ui-source{grid-column:1}
+  .google-review-ui-copy{font-size:34px}
+  .google-review-ui-panel{max-width:100%}
 }
 @media(prefers-reduced-motion:reduce){
   .testimonial blockquote.active{animation:none}
@@ -2029,13 +2054,20 @@ gmp-place-details#oralc-place-details{
       </div>
 
       <div class="google-review-ui-source" id="google-review-ui-source" aria-hidden="true">
-        <gmp-place-details id="oralc-place-details" aria-label="Aktuelle Google-Rezensionen für ORALC">
-          <gmp-place-details-place-request id="oralc-place-request"></gmp-place-details-place-request>
-          <gmp-place-content-config>
-            <gmp-place-reviews></gmp-place-reviews>
-            <gmp-place-attribution light-scheme-color="#6b625c" dark-scheme-color="#f7f2eb"></gmp-place-attribution>
-          </gmp-place-content-config>
-        </gmp-place-details>
+        <div class="google-review-ui-copy">
+          <p>Erfahrungen unserer Patientinnen und Patienten.</p>
+          <small>Die Rezensionen werden direkt und unverändert über Google bereitgestellt.</small>
+        </div>
+        <div class="google-review-ui-panel">
+          <p class="google-review-ui-status" id="google-review-ui-status">Google-Rezensionen werden geladen …</p>
+          <gmp-place-details id="oralc-place-details" aria-label="Aktuelle Google-Rezensionen für ORALC">
+            <gmp-place-details-place-request id="oralc-place-request"></gmp-place-details-place-request>
+            <gmp-place-content-config>
+              <gmp-place-reviews></gmp-place-reviews>
+              <gmp-place-attribution light-scheme-color="gray" dark-scheme-color="white"></gmp-place-attribution>
+            </gmp-place-content-config>
+          </gmp-place-details>
+        </div>
       </div>
 
       <div class="testimonial-meta">
@@ -2288,13 +2320,26 @@ document.querySelector('#year').textContent = new Date().getFullYear();
     const details = document.querySelector('#oralc-place-details');
     const request = document.querySelector('#oralc-place-request');
     const uiSource = document.querySelector('#google-review-ui-source');
+    const uiStatus = document.querySelector('#google-review-ui-status');
     const previousButton = section?.querySelector('.prev');
     const nextButton = section?.querySelector('.next');
-    if (!section || !slider || !details || !request) return;
+    if (!section || !slider || !details || !request || !uiSource) return;
 
     let slides = [];
     let currentIndex = 0;
     let rotationTimer = null;
+    let completed = false;
+
+    const withTimeout = (promise, milliseconds, message) => Promise.race([
+      promise,
+      new Promise((_, reject) => window.setTimeout(() => reject(new Error(message)), milliseconds))
+    ]);
+
+    const reviewText = review => {
+      const value = review?.text || review?.originalText || '';
+      if (typeof value === 'string') return value.trim();
+      return String(value?.text || '').trim();
+    };
 
     const showSlide = index => {
       if (!slides.length) return;
@@ -2326,10 +2371,9 @@ document.querySelector('#year').textContent = new Date().getFullYear();
       const authorName = document.createElement('strong');
       const meta = document.createElement('span');
       const rating = Math.max(0, Math.min(5, Math.round(Number(review.rating || 0))));
-      const reviewText = review.text || review.originalText;
 
       text.className = 'google-review-text';
-      text.textContent = reviewText;
+      text.textContent = reviewText(review);
       footer.className = 'google-review-footer';
       author.className = 'google-review-author';
 
@@ -2399,6 +2443,9 @@ document.querySelector('#year').textContent = new Date().getFullYear();
     };
 
     const renderCustomReviews = reviews => {
+      completed = true;
+      section.classList.remove('is-ui-kit-fallback');
+      uiSource.setAttribute('aria-hidden', 'true');
       slider.replaceChildren();
       reviews.forEach(review => slider.append(createReviewSlide(review)));
       const source = document.createElement('small');
@@ -2409,15 +2456,10 @@ document.querySelector('#year').textContent = new Date().getFullYear();
       startSlider();
     };
 
-    const revealOfficialUiKit = () => {
-      section.classList.add('is-ui-kit-fallback');
-      uiSource?.setAttribute('aria-hidden', 'false');
-      slider.setAttribute('aria-busy', 'false');
-      if (previousButton) previousButton.disabled = true;
-      if (nextButton) nextButton.disabled = true;
-    };
-
-    const showError = message => {
+    const showFinalError = message => {
+      completed = true;
+      section.classList.remove('is-ui-kit-fallback');
+      uiSource.setAttribute('aria-hidden', 'true');
       slider.replaceChildren();
       const error = document.createElement('p');
       error.className = 'google-review-error';
@@ -2432,75 +2474,107 @@ document.querySelector('#year').textContent = new Date().getFullYear();
       slider.setAttribute('aria-busy', 'false');
     };
 
-    const waitForUiKit = () => new Promise((resolve, reject) => {
-      let settled = false;
-      const finish = callback => event => {
-        if (settled) return;
-        settled = true;
-        window.clearTimeout(timeoutId);
-        callback(event);
+    const showOfficialUiKit = async placeId => {
+      completed = true;
+      section.classList.add('is-ui-kit-fallback');
+      uiSource.setAttribute('aria-hidden', 'false');
+      slider.setAttribute('aria-busy', 'false');
+      if (previousButton) previousButton.disabled = true;
+      if (nextButton) nextButton.disabled = true;
+
+      await Promise.all([
+        customElements.whenDefined('gmp-place-details'),
+        customElements.whenDefined('gmp-place-details-place-request'),
+        customElements.whenDefined('gmp-place-reviews')
+      ]);
+
+      let loaded = false;
+      const onLoad = () => {
+        loaded = true;
+        if (uiStatus) uiStatus.hidden = true;
       };
-      const timeoutId = window.setTimeout(finish(() => reject(new Error('Zeitüberschreitung beim Laden der Google-Rezensionen.'))), 18000);
-      details.addEventListener('gmp-load', finish(resolve), {once:true});
-      details.addEventListener('gmp-error', finish(event => reject(event?.error || new Error('Google Places UI Kit konnte nicht geladen werden.'))), {once:true});
-    });
+      const onError = () => {
+        if (uiStatus) {
+          uiStatus.hidden = false;
+          uiStatus.textContent = 'Die Rezensionen konnten nicht automatisch geladen werden. Bitte öffnen Sie alle Bewertungen bei Google.';
+        }
+      };
+      details.addEventListener('gmp-load', onLoad, {once:true});
+      details.addEventListener('gmp-error', onError, {once:true});
+
+      // Set the request only after all involved custom elements are upgraded.
+      // This avoids a property-shadowing race that can leave the widget loading forever.
+      request.removeAttribute('place');
+      request.setAttribute('place', placeId);
+      request.place = placeId;
+
+      window.setTimeout(() => {
+        if (!loaded && uiStatus) {
+          uiStatus.hidden = false;
+          uiStatus.textContent = 'Google lädt die Rezensionen langsamer als erwartet. Alternativ können Sie alle Bewertungen direkt öffnen.';
+        }
+      }, 12000);
+    };
 
     async function initializeReviews() {
       try {
-        const {Place} = await google.maps.importLibrary('places');
-        await customElements.whenDefined('gmp-place-details');
+        const {Place} = await withTimeout(
+          google.maps.importLibrary('places'),
+          10000,
+          'Die Google Places Library konnte nicht geladen werden.'
+        );
 
-        const result = await Place.searchByText({
+        const result = await withTimeout(Place.searchByText({
           textQuery: section.dataset.placeQuery,
           fields: ['id', 'displayName', 'formattedAddress'],
           language: 'de-DE',
           region: 'de',
           maxResultCount: 1
-        });
+        }), 10000, 'Der ORALC-Eintrag konnte nicht rechtzeitig gefunden werden.');
+
         const searchPlace = result?.places?.[0];
         if (!searchPlace?.id) throw new Error('Der ORALC-Google-Eintrag wurde nicht gefunden.');
 
-        const uiKitReady = waitForUiKit();
-        request.place = searchPlace.id;
-        request.setAttribute('place', searchPlace.id);
+        // Always create a dedicated Place Details object from the exact ID.
+        // This is more reliable for Enterprise/Atmosphere fields such as reviews.
+        const place = new Place({id: searchPlace.id});
 
         try {
-          await searchPlace.fetchFields({
-            fields: ['rating', 'userRatingCount', 'googleMapsLinks', 'googleMapsURI']
-          });
-          updateMetadata(searchPlace);
-        } catch (metadataError) {
-          console.warn('Google-Bewertungsmetadaten konnten nicht ergänzt werden:', metadataError);
-        }
+          await withTimeout(place.fetchFields({
+            fields: ['displayName', 'rating', 'userRatingCount', 'reviews', 'googleMapsLinks', 'googleMapsURI']
+          }), 10000, 'Zeitüberschreitung beim Abrufen der Google-Rezensionen.');
+          updateMetadata(place);
 
-        await uiKitReady;
-
-        const detailsPlace = details.place || searchPlace;
-        try {
-          await detailsPlace.fetchFields({
-            fields: ['rating', 'userRatingCount', 'reviews', 'googleMapsLinks', 'googleMapsURI']
-          });
-          updateMetadata(detailsPlace);
-          const reviews = (detailsPlace.reviews || []).filter(review => review.text || review.originalText);
+          const reviews = (place.reviews || []).filter(review => reviewText(review));
           if (reviews.length) {
             renderCustomReviews(reviews);
             return;
           }
         } catch (reviewError) {
-          console.warn('Die Rezensionstexte werden über das offizielle UI-Kit dargestellt:', reviewError);
+          console.warn('Direkte Rezensionstexte sind nicht verfügbar; Places UI Kit wird verwendet:', reviewError);
+          // Metadata may still be available on the search result in some projects.
+          try {
+            await searchPlace.fetchFields({fields:['rating','userRatingCount','googleMapsLinks','googleMapsURI']});
+            updateMetadata(searchPlace);
+          } catch (_) {}
         }
 
-        // If Google does not expose the review objects to JavaScript, keep the
-        // previous ORALC section structure and reveal Google's official review
-        // component inside it rather than showing an empty loading state.
-        revealOfficialUiKit();
+        // EEA projects can omit raw review text from Place.fetchFields().
+        // The official UI Kit is the supported fallback and displays the reviews itself.
+        await showOfficialUiKit(searchPlace.id);
       } catch (error) {
         console.error('Google-Rezensionen konnten nicht geladen werden:', error);
-        showError('Die Google-Bewertungen konnten momentan nicht geladen werden.');
+        showFinalError('Die Google-Bewertungen konnten momentan nicht geladen werden.');
       }
     }
 
-    initializeReviews();
+    const watchdog = window.setTimeout(() => {
+      if (!completed) showFinalError('Die Google-Bewertungen konnten momentan nicht geladen werden.');
+    }, 22000);
+
+    initializeReviews().finally(() => {
+      if (completed) window.clearTimeout(watchdog);
+    });
   })();
 </script>
 
