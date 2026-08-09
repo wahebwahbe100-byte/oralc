@@ -1772,160 +1772,26 @@ body *{
 
 
 
-/* ===== Google Places UI Kit: ORALC patient reviews ===== */
-.google-reviews-ui{
-  position:relative;
-  isolation:isolate;
-  display:grid;
-  grid-template-columns:minmax(0,1.05fr) minmax(340px,.72fr);
-  gap:clamp(54px,8vw,120px);
-  align-items:center;
-  padding:clamp(88px,10vw,150px) 8vw;
-  overflow:hidden;
-  background:
-    radial-gradient(circle at 12% 8%,rgba(163,119,87,.14),transparent 31%),
-    linear-gradient(135deg,#f8f4ed 0%,#f0e7dc 100%);
-}
-.google-reviews-ui::before{
-  content:'“';
+/* ===== Google reviews: previous ORALC testimonial appearance + UI Kit bridge ===== */
+.google-reviews .google-review-ui-source{
   position:absolute;
-  top:-80px;
-  left:3vw;
-  z-index:-1;
-  font-family:var(--serif);
-  font-size:clamp(250px,34vw,540px);
-  line-height:1;
-  color:rgba(86,54,40,.055);
+  left:-10000px;
+  top:0;
+  width:390px;
+  height:560px;
+  overflow:hidden;
+  opacity:.001;
   pointer-events:none;
 }
-.reviews-ui-copy{max-width:820px}
-.reviews-ui-copy h2{
-  margin:16px 0 28px;
-  max-width:780px;
-  font-family:var(--serif);
-  font-size:clamp(48px,6.3vw,92px);
-  font-weight:500;
-  line-height:.98;
-  letter-spacing:-.045em;
-}
-.reviews-ui-copy h2 em{color:var(--brown);font-weight:500}
-.reviews-ui-intro{
-  max-width:650px;
-  margin:0;
-  color:rgba(41,37,34,.72);
-  font-size:clamp(17px,1.35vw,20px);
-  line-height:1.65;
-}
-.reviews-ui-rating{
-  display:flex;
-  align-items:center;
-  flex-wrap:wrap;
-  gap:10px;
-  margin-top:36px;
-  font-family:var(--sans);
-}
-.reviews-ui-google{font-weight:600;letter-spacing:.01em}
-.reviews-ui-stars{color:#b7791f;letter-spacing:.08em;white-space:nowrap}
-.reviews-ui-score{font-size:22px;line-height:1}
-.reviews-ui-count{color:rgba(41,37,34,.64);font-size:14px}
-.reviews-ui-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
-.reviews-ui-link{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  min-height:48px;
-  padding:0 20px;
-  border:1px solid var(--ink);
-  font-size:12px;
-  letter-spacing:.1em;
-  text-transform:uppercase;
-  transition:background-color .2s ease,color .2s ease,transform .2s ease;
-}
-.reviews-ui-link:hover{transform:translateY(-2px);background:var(--ink);color:#fff}
-.reviews-ui-link--primary{background:var(--brown);border-color:var(--brown);color:#fff}
-.reviews-ui-link--primary:hover{background:var(--ink);border-color:var(--ink)}
-.reviews-ui-note{
-  margin:18px 0 0;
-  font-size:12px;
-  color:rgba(41,37,34,.54);
-}
-.reviews-ui-panel{
-  position:relative;
-  justify-self:end;
-  width:min(100%,430px);
-  min-height:590px;
-  padding:18px;
-  border:1px solid rgba(86,54,40,.16);
-  border-radius:2px;
-  background:rgba(255,255,255,.74);
-  box-shadow:0 28px 80px rgba(64,42,30,.14);
-  backdrop-filter:blur(14px);
-  -webkit-backdrop-filter:blur(14px);
-}
-.reviews-ui-panel-head{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:18px;
-  min-height:54px;
-  padding:0 8px 14px;
-  border-bottom:1px solid rgba(86,54,40,.13);
-  font-family:var(--sans);
-  font-size:11px;
-  letter-spacing:.12em;
-  text-transform:uppercase;
-}
-.reviews-ui-live-dot{
-  display:inline-flex;
-  align-items:center;
-  gap:7px;
-  color:rgba(41,37,34,.64);
-}
-.reviews-ui-live-dot::before{
-  content:'';
-  width:7px;
-  height:7px;
-  border-radius:50%;
-  background:#4b8b5b;
-  box-shadow:0 0 0 5px rgba(75,139,91,.12);
-}
-.reviews-ui-loader,
-.reviews-ui-fallback{
-  position:absolute;
-  inset:73px 18px 18px;
-  display:grid;
-  place-content:center;
-  gap:14px;
-  padding:30px;
-  text-align:center;
-  background:#fbfaf8;
-  color:rgba(41,37,34,.7);
-  font-family:var(--sans);
-  line-height:1.55;
-}
-.reviews-ui-loader::before{
-  content:'';
-  justify-self:center;
-  width:34px;
-  height:34px;
-  border:2px solid rgba(86,54,40,.18);
-  border-top-color:var(--brown);
-  border-radius:50%;
-  animation:oralcSpin .9s linear infinite;
-}
-@keyframes oralcSpin{to{transform:rotate(360deg)}}
-.reviews-ui-fallback[hidden],.reviews-ui-loader[hidden]{display:none}
-.reviews-ui-fallback strong{font-family:var(--serif);font-size:27px;font-weight:500;color:var(--ink)}
-.reviews-ui-fallback a{text-decoration:underline;text-underline-offset:4px}
 gmp-place-details#oralc-place-details{
   display:block;
   width:100%;
-  height:500px;
-  margin-top:16px;
-  opacity:0;
-  overflow:auto;
+  height:100%;
   color-scheme:light;
-  --gmp-mat-color-surface:#fbfaf8;
+  border:0;
+  border-radius:0;
+  background:transparent;
+  --gmp-mat-color-surface:#f8f4ed;
   --gmp-mat-color-on-surface:#292522;
   --gmp-mat-color-on-surface-variant:#6b625c;
   --gmp-mat-color-primary:#563628;
@@ -1935,27 +1801,42 @@ gmp-place-details#oralc-place-details{
   --gmp-mat-color-on-neutral-container:#5d554f;
   --gmp-mat-color-outline-decorative:#d9cec3;
   --gmp-mat-font-family:'DM Sans',Arial,sans-serif;
-  transition:opacity .35s ease;
 }
-.google-reviews-ui.is-ready gmp-place-details#oralc-place-details{opacity:1}
-@media(max-width:980px){
-  .google-reviews-ui{grid-template-columns:1fr;gap:55px}
-  .reviews-ui-copy{max-width:900px}
-  .reviews-ui-panel{justify-self:start;width:min(100%,560px)}
+.google-reviews.is-ui-kit-fallback .testimonial-slider{display:none}
+.google-reviews.is-ui-kit-fallback .google-review-ui-source{
+  position:relative;
+  left:auto;
+  top:auto;
+  grid-column:2;
+  width:min(100%,920px);
+  height:480px;
+  overflow:auto;
+  opacity:1;
+  pointer-events:auto;
 }
+.google-reviews.is-ui-kit-fallback .slider-controls{display:none}
+.google-reviews .google-review-status-link{
+  display:inline-flex;
+  margin-top:24px;
+  min-height:42px;
+  align-items:center;
+  padding:0 16px;
+  border:1px solid var(--ink);
+  font-family:var(--sans);
+  font-size:12px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.google-reviews .google-review-status-link:hover{background:var(--ink);color:#fff}
 @media(max-width:600px){
-  .google-reviews-ui{padding:76px 6vw 86px;gap:42px}
-  .reviews-ui-copy h2{font-size:clamp(43px,13vw,62px)}
-  .reviews-ui-actions{display:grid;grid-template-columns:1fr}
-  .reviews-ui-link{width:100%}
-  .reviews-ui-panel{min-height:565px;padding:12px}
-  .reviews-ui-panel-head{padding-inline:5px}
-  .reviews-ui-loader,.reviews-ui-fallback{inset:67px 12px 12px}
-  gmp-place-details#oralc-place-details{height:485px;margin-top:12px}
+  .google-reviews.is-ui-kit-fallback .google-review-ui-source{
+    grid-column:1;
+    width:100%;
+    height:500px;
+  }
 }
 @media(prefers-reduced-motion:reduce){
-  .reviews-ui-loader::before{animation:none}
-  gmp-place-details#oralc-place-details,.reviews-ui-link{transition:none}
+  .testimonial blockquote.active{animation:none}
 }
 
 </style>
@@ -2141,42 +2022,36 @@ gmp-place-details#oralc-place-details{
       </div>
     </section>
 
-    <section class="google-reviews-ui" id="patientenstimmen" aria-label="Google-Bewertungen" data-place-query="ORALC Oralchirurgie Warschauer Straße, Warschauer Straße 38, 10243 Berlin, Deutschland">
-      <div class="reviews-ui-copy reveal">
-        <p class="eyebrow">Google-Bewertungen</p>
-        <h2>Vertrauen, das von <em>Patientinnen und Patienten</em> kommt.</h2>
-        <p class="reviews-ui-intro">Erfahrungen aus erster Hand: Lesen Sie aktuelle, von Google bereitgestellte Rezensionen über die Behandlung und Betreuung bei ORALC.</p>
-        <div class="reviews-ui-rating" aria-label="Google-Gesamtbewertung">
-          <span class="reviews-ui-google">Google</span>
-          <span class="reviews-ui-stars" id="google-rating-stars" aria-hidden="true">★★★★★</span>
-          <strong class="reviews-ui-score" id="google-rating-value">–</strong>
-          <span class="reviews-ui-count" id="google-rating-count">Bewertungen werden geladen</span>
-        </div>
-        <div class="reviews-ui-actions">
-          <a class="reviews-ui-link reviews-ui-link--primary" id="google-write-review" href="https://www.google.com/maps/search/?api=1&amp;query=ORALC+Warschauer+Stra%C3%9Fe+38+Berlin" target="_blank" rel="noopener">Bewertung schreiben</a>
-          <a class="reviews-ui-link" id="google-all-reviews" href="https://www.google.com/maps/search/?api=1&amp;query=ORALC+Warschauer+Stra%C3%9Fe+38+Berlin" target="_blank" rel="noopener">Alle Bewertungen</a>
-        </div>
-        <p class="reviews-ui-note">Rezensionen, Bewertung und Quellenhinweise werden direkt durch Google dargestellt.</p>
+    <section class="testimonial google-reviews" id="patientenstimmen" aria-label="Google-Bewertungen" data-place-query="ORALC Oralchirurgie Warschauer Straße, Warschauer Straße 38, 10243 Berlin, Deutschland">
+      <div class="quote-mark" aria-hidden="true">“</div>
+      <div class="testimonial-slider reveal" id="google-review-slider" aria-live="polite" aria-busy="true">
+        <p class="google-review-loading">Aktuelle Google-Bewertungen werden geladen …</p>
       </div>
 
-      <div class="reviews-ui-panel reveal" aria-live="polite">
-        <div class="reviews-ui-panel-head">
-          <strong>ORALC · Berlin</strong>
-          <span class="reviews-ui-live-dot">Direkt von Google</span>
-        </div>
-        <div class="reviews-ui-loader" id="reviews-ui-loader">Aktuelle Rezensionen werden geladen …</div>
+      <div class="google-review-ui-source" id="google-review-ui-source" aria-hidden="true">
         <gmp-place-details id="oralc-place-details" aria-label="Aktuelle Google-Rezensionen für ORALC">
           <gmp-place-details-place-request id="oralc-place-request"></gmp-place-details-place-request>
           <gmp-place-content-config>
-            <gmp-place-rating></gmp-place-rating>
             <gmp-place-reviews></gmp-place-reviews>
             <gmp-place-attribution light-scheme-color="#6b625c" dark-scheme-color="#f7f2eb"></gmp-place-attribution>
           </gmp-place-content-config>
         </gmp-place-details>
-        <div class="reviews-ui-fallback" id="reviews-ui-fallback" hidden>
-          <strong>Rezensionen auf Google ansehen</strong>
-          <span>Die direkte Anzeige ist momentan nicht verfügbar.</span>
-          <a href="https://www.google.com/maps/search/?api=1&amp;query=ORALC+Warschauer+Stra%C3%9Fe+38+Berlin" target="_blank" rel="noopener">Google-Bewertungen öffnen</a>
+      </div>
+
+      <div class="testimonial-meta">
+        <div class="google-rating-summary" aria-label="Google-Gesamtbewertung">
+          <span class="google-wordmark">Google</span>
+          <span class="google-review-stars" id="google-rating-stars" aria-hidden="true">★★★★★</span>
+          <strong class="google-rating-value" id="google-rating-value">–</strong>
+          <span class="google-rating-count" id="google-rating-count">Bewertungen werden geladen</span>
+        </div>
+        <div class="google-review-tools">
+          <a class="google-review-link" id="google-all-reviews" href="https://www.google.com/maps/search/?api=1&amp;query=ORALC+Warschauer+Stra%C3%9Fe+38+Berlin" target="_blank" rel="noopener">Alle ansehen</a>
+          <a class="google-review-link google-review-link--write" id="google-write-review" href="https://www.google.com/maps/search/?api=1&amp;query=ORALC+Warschauer+Stra%C3%9Fe+38+Berlin" target="_blank" rel="noopener">Bewertung schreiben</a>
+          <div class="slider-controls">
+            <button class="prev" type="button" aria-label="Vorherige Bewertung" disabled><svg class="ui-icon ui-icon--arrow-left" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M19 12H5m6 6-6-6 6-6"/></svg></button>
+            <button class="next" type="button" aria-label="Nächste Bewertung" disabled><svg class="ui-icon ui-icon--arrow-right" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+          </div>
         </div>
       </div>
     </section>
@@ -2408,36 +2283,95 @@ document.querySelector('#year').textContent = new Date().getFullYear();
 </script>
 <script>
   (() => {
-    const section = document.querySelector('.google-reviews-ui');
+    const section = document.querySelector('.google-reviews');
+    const slider = document.querySelector('#google-review-slider');
     const details = document.querySelector('#oralc-place-details');
     const request = document.querySelector('#oralc-place-request');
-    const loader = document.querySelector('#reviews-ui-loader');
-    const fallback = document.querySelector('#reviews-ui-fallback');
-    if (!section || !details || !request) return;
+    const uiSource = document.querySelector('#google-review-ui-source');
+    const previousButton = section?.querySelector('.prev');
+    const nextButton = section?.querySelector('.next');
+    if (!section || !slider || !details || !request) return;
 
-    let finished = false;
-    let timeoutId;
+    let slides = [];
+    let currentIndex = 0;
+    let rotationTimer = null;
 
-    const showFallback = (error) => {
-      if (finished) return;
-      finished = true;
-      window.clearTimeout(timeoutId);
-      console.error('Google Places UI Kit konnte nicht geladen werden:', error);
-      loader?.setAttribute('hidden', '');
-      fallback?.removeAttribute('hidden');
-      details.style.display = 'none';
+    const showSlide = index => {
+      if (!slides.length) return;
+      slides.forEach(slide => slide.classList.remove('active'));
+      currentIndex = (index + slides.length) % slides.length;
+      slides[currentIndex].classList.add('active');
     };
 
-    const markReady = () => {
-      if (finished) return;
-      finished = true;
-      window.clearTimeout(timeoutId);
-      loader?.setAttribute('hidden', '');
-      fallback?.setAttribute('hidden', '');
-      section.classList.add('is-ready');
+    const startSlider = () => {
+      slides = [...slider.querySelectorAll('blockquote')];
+      const multiple = slides.length > 1;
+      if (previousButton) previousButton.disabled = !multiple;
+      if (nextButton) nextButton.disabled = !multiple;
+      if (slides.length) showSlide(0);
+      if (rotationTimer) window.clearInterval(rotationTimer);
+      if (multiple && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        rotationTimer = window.setInterval(() => showSlide(currentIndex + 1), 6500);
+      }
     };
 
-    const updateRating = (place) => {
+    previousButton?.addEventListener('click', () => showSlide(currentIndex - 1));
+    nextButton?.addEventListener('click', () => showSlide(currentIndex + 1));
+
+    const createReviewSlide = review => {
+      const quote = document.createElement('blockquote');
+      const text = document.createElement('span');
+      const footer = document.createElement('footer');
+      const author = document.createElement('div');
+      const authorName = document.createElement('strong');
+      const meta = document.createElement('span');
+      const rating = Math.max(0, Math.min(5, Math.round(Number(review.rating || 0))));
+      const reviewText = review.text || review.originalText;
+
+      text.className = 'google-review-text';
+      text.textContent = reviewText;
+      footer.className = 'google-review-footer';
+      author.className = 'google-review-author';
+
+      const attribution = review.authorAttribution;
+      authorName.textContent = attribution?.displayName || 'Google-Nutzer';
+      if (attribution?.uri) {
+        const authorLink = document.createElement('a');
+        authorLink.href = attribution.uri;
+        authorLink.target = '_blank';
+        authorLink.rel = 'noopener';
+        authorLink.textContent = authorName.textContent;
+        authorName.replaceChildren(authorLink);
+      }
+
+      const stars = '★'.repeat(rating) + '☆'.repeat(5 - rating);
+      const timeText = review.relativePublishTimeDescription || '';
+      meta.textContent = `${stars}${timeText ? ` · ${timeText}` : ''}`;
+      meta.setAttribute('aria-label', `${rating} von 5 Sternen${timeText ? `, ${timeText}` : ''}`);
+
+      if (attribution?.photoURI) {
+        const avatar = document.createElement('img');
+        avatar.className = 'google-review-avatar';
+        avatar.src = attribution.photoURI;
+        avatar.alt = '';
+        avatar.loading = 'lazy';
+        avatar.referrerPolicy = 'no-referrer';
+        footer.append(avatar);
+      }
+
+      author.append(authorName, meta);
+      footer.append(author);
+      quote.append(text, footer);
+
+      if (review.googleMapsURI) {
+        quote.addEventListener('click', () => window.open(review.googleMapsURI, '_blank', 'noopener'));
+        quote.style.cursor = 'pointer';
+        quote.title = 'Bewertung auf Google Maps öffnen';
+      }
+      return quote;
+    };
+
+    const updateMetadata = place => {
       const rating = Number(place.rating || 0);
       const count = Number(place.userRatingCount || 0);
       const ratingValue = document.querySelector('#google-rating-value');
@@ -2464,6 +2398,53 @@ document.querySelector('#year').textContent = new Date().getFullYear();
       if (writeReview && writeLink) writeReview.href = writeLink;
     };
 
+    const renderCustomReviews = reviews => {
+      slider.replaceChildren();
+      reviews.forEach(review => slider.append(createReviewSlide(review)));
+      const source = document.createElement('small');
+      source.className = 'google-attribution';
+      source.textContent = 'Quelle: Google';
+      slider.append(source);
+      slider.setAttribute('aria-busy', 'false');
+      startSlider();
+    };
+
+    const revealOfficialUiKit = () => {
+      section.classList.add('is-ui-kit-fallback');
+      uiSource?.setAttribute('aria-hidden', 'false');
+      slider.setAttribute('aria-busy', 'false');
+      if (previousButton) previousButton.disabled = true;
+      if (nextButton) nextButton.disabled = true;
+    };
+
+    const showError = message => {
+      slider.replaceChildren();
+      const error = document.createElement('p');
+      error.className = 'google-review-error';
+      error.textContent = message;
+      const link = document.createElement('a');
+      link.className = 'google-review-status-link';
+      link.href = document.querySelector('#google-all-reviews')?.href || 'https://www.google.com/maps/search/?api=1&query=ORALC+Warschauer+Stra%C3%9Fe+38+Berlin';
+      link.target = '_blank';
+      link.rel = 'noopener';
+      link.textContent = 'Bewertungen auf Google öffnen';
+      slider.append(error, link);
+      slider.setAttribute('aria-busy', 'false');
+    };
+
+    const waitForUiKit = () => new Promise((resolve, reject) => {
+      let settled = false;
+      const finish = callback => event => {
+        if (settled) return;
+        settled = true;
+        window.clearTimeout(timeoutId);
+        callback(event);
+      };
+      const timeoutId = window.setTimeout(finish(() => reject(new Error('Zeitüberschreitung beim Laden der Google-Rezensionen.'))), 18000);
+      details.addEventListener('gmp-load', finish(resolve), {once:true});
+      details.addEventListener('gmp-error', finish(event => reject(event?.error || new Error('Google Places UI Kit konnte nicht geladen werden.'))), {once:true});
+    });
+
     async function initializeReviews() {
       try {
         const {Place} = await google.maps.importLibrary('places');
@@ -2476,32 +2457,46 @@ document.querySelector('#year').textContent = new Date().getFullYear();
           region: 'de',
           maxResultCount: 1
         });
+        const searchPlace = result?.places?.[0];
+        if (!searchPlace?.id) throw new Error('Der ORALC-Google-Eintrag wurde nicht gefunden.');
 
-        const place = result?.places?.[0];
-        if (!place?.id) throw new Error('Der ORALC-Google-Eintrag wurde nicht gefunden.');
+        const uiKitReady = waitForUiKit();
+        request.place = searchPlace.id;
+        request.setAttribute('place', searchPlace.id);
 
-        details.addEventListener('gmp-load', markReady, {once:true});
-        details.addEventListener('gmp-error', event => showFallback(event), {once:true});
-        request.place = place.id;
-        request.setAttribute('place', place.id);
-
-        timeoutId = window.setTimeout(() => {
-          if (!finished) showFallback(new Error('Zeitüberschreitung beim Laden der Google-Rezensionen.'));
-        }, 18000);
-
-        // The UI Kit renders the review content independently. Rating and
-        // direct Google links are enhanced separately so a field error never
-        // prevents the official review component from appearing.
         try {
-          await place.fetchFields({
+          await searchPlace.fetchFields({
             fields: ['rating', 'userRatingCount', 'googleMapsLinks', 'googleMapsURI']
           });
-          updateRating(place);
+          updateMetadata(searchPlace);
         } catch (metadataError) {
           console.warn('Google-Bewertungsmetadaten konnten nicht ergänzt werden:', metadataError);
         }
+
+        await uiKitReady;
+
+        const detailsPlace = details.place || searchPlace;
+        try {
+          await detailsPlace.fetchFields({
+            fields: ['rating', 'userRatingCount', 'reviews', 'googleMapsLinks', 'googleMapsURI']
+          });
+          updateMetadata(detailsPlace);
+          const reviews = (detailsPlace.reviews || []).filter(review => review.text || review.originalText);
+          if (reviews.length) {
+            renderCustomReviews(reviews);
+            return;
+          }
+        } catch (reviewError) {
+          console.warn('Die Rezensionstexte werden über das offizielle UI-Kit dargestellt:', reviewError);
+        }
+
+        // If Google does not expose the review objects to JavaScript, keep the
+        // previous ORALC section structure and reveal Google's official review
+        // component inside it rather than showing an empty loading state.
+        revealOfficialUiKit();
       } catch (error) {
-        showFallback(error);
+        console.error('Google-Rezensionen konnten nicht geladen werden:', error);
+        showError('Die Google-Bewertungen konnten momentan nicht geladen werden.');
       }
     }
 
