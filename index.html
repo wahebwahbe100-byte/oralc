@@ -1953,7 +1953,7 @@ body *{
       </div>
     </section>
 
-    <section class="testimonial google-reviews" id="patientenstimmen" aria-label="Google-Bewertungen" data-place-query="ORALC Oralchirurgie & Implantologie, Warschauer Straße 38, 10243 Berlin">
+    <section class="testimonial google-reviews" id="patientenstimmen" aria-label="Google-Bewertungen" data-place-query="ORALC Oralchirurgie Warschauer Straße, Warschauer Straße 38, 10243 Berlin, Deutschland">
       <div class="quote-mark" aria-hidden="true">“</div>
       <div class="testimonial-slider reveal" id="google-review-slider" aria-live="polite" aria-busy="true">
         <p class="google-review-loading">Aktuelle Google-Bewertungen werden geladen …</p>
@@ -2262,6 +2262,7 @@ document.querySelector('#year').textContent = new Date().getFullYear();
       avatar.src = attribution.photoURI;
       avatar.alt = '';
       avatar.loading = 'lazy';
+      avatar.referrerPolicy = 'no-referrer';
       footer.append(avatar);
     }
 
@@ -2278,23 +2279,77 @@ document.querySelector('#year').textContent = new Date().getFullYear();
     return quote;
   }
 
+  const googleReviewsState = {
+    finished: false,
+    timeoutId: null
+  };
+
+  function finishGoogleReviewsLoading() {
+    googleReviewsState.finished = true;
+    if (googleReviewsState.timeoutId) {
+      window.clearTimeout(googleReviewsState.timeoutId);
+      googleReviewsState.timeoutId = null;
+    }
+  }
+
+  function showGoogleReviewsFallback(message = 'Die Google-Bewertungen konnten momentan nicht geladen werden.') {
+    if (googleReviewsState.finished) return;
+    finishGoogleReviewsLoading();
+
+    const slider = document.querySelector('#google-review-slider');
+    if (!slider) return;
+
+    slider.replaceChildren();
+    const fallback = document.createElement('p');
+    fallback.className = 'google-review-error';
+    fallback.textContent = message;
+
+    const link = document.createElement('a');
+    link.className = 'google-review-link google-review-link--write';
+    link.href = document.querySelector('#google-all-reviews')?.href || 'https://www.google.com/maps/search/?api=1&query=ORALC+Warschauer+Stra%C3%9Fe+38+Berlin';
+    link.target = '_blank';
+    link.rel = 'noopener';
+    link.textContent = 'Bewertungen auf Google öffnen';
+
+    slider.append(fallback, link);
+    slider.setAttribute('aria-busy', 'false');
+  }
+
+  function handleGoogleMapsLoadError() {
+    console.error('Google Maps JavaScript API konnte nicht geladen werden. Prüfen Sie API-Key, Domainfreigabe und Abrechnung.');
+    showGoogleReviewsFallback();
+  }
+
   async function initGoogleReviews() {
     const section = document.querySelector('.google-reviews');
     const slider = document.querySelector('#google-review-slider');
-    if (!section || !slider) return;
+    if (!section || !slider || googleReviewsState.finished) return;
 
     try {
+      if (!window.google?.maps?.importLibrary) {
+        throw new Error('Google Maps JavaScript API ist nicht verfügbar.');
+      }
+
       const { Place } = await google.maps.importLibrary('places');
-      const { places } = await Place.searchByText({
+
+      // Search only for the correct Place first. Review data is then loaded
+      // through fetchFields(), which is the supported Place Details workflow.
+      const searchResult = await Place.searchByText({
         textQuery: section.dataset.placeQuery,
-        fields: ['displayName', 'formattedAddress', 'rating', 'userRatingCount', 'reviews', 'googleMapsLinks', 'googleMapsURI'],
-        language: 'de',
+        fields: ['id', 'displayName', 'formattedAddress'],
+        language: 'de-DE',
         region: 'de',
         maxResultCount: 1
       });
 
-      const place = places?.[0];
-      if (!place) throw new Error('ORALC wurde in Google Places nicht gefunden.');
+      const place = searchResult?.places?.[0];
+      if (!place?.id) {
+        throw new Error('ORALC wurde in Google Places nicht gefunden.');
+      }
+
+      await place.fetchFields({
+        fields: ['displayName', 'rating', 'userRatingCount', 'reviews', 'googleMapsLinks', 'googleMapsURI']
+      });
 
       const reviews = (place.reviews || []).filter(review => review.text || review.originalText);
       slider.replaceChildren();
@@ -2304,7 +2359,7 @@ document.querySelector('#year').textContent = new Date().getFullYear();
       } else {
         const empty = document.createElement('p');
         empty.className = 'google-review-error';
-        empty.textContent = 'Aktuell sind keine Rezensionstexte über die Google-Schnittstelle verfügbar.';
+        empty.textContent = 'Google stellt für diesen Eintrag aktuell keine Rezensionstexte über die Schnittstelle bereit.';
         slider.append(empty);
       }
 
@@ -2316,8 +2371,16 @@ document.querySelector('#year').textContent = new Date().getFullYear();
       const allReviews = document.querySelector('#google-all-reviews');
       const writeReview = document.querySelector('#google-write-review');
 
-      if (ratingValue) ratingValue.textContent = rating ? rating.toLocaleString('de-DE', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) : '–';
-      if (ratingCount) ratingCount.textContent = count ? `${count.toLocaleString('de-DE')} Bewertungen` : 'Google-Bewertungen';
+      if (ratingValue) {
+        ratingValue.textContent = rating
+          ? rating.toLocaleString('de-DE', { minimumFractionDigits: 1, maximumFractionDigits: 1 })
+          : '–';
+      }
+      if (ratingCount) {
+        ratingCount.textContent = count
+          ? `${count.toLocaleString('de-DE')} Bewertungen`
+          : 'Google-Bewertungen';
+      }
       if (ratingStars) {
         const fullStars = Math.max(0, Math.min(5, Math.round(rating)));
         ratingStars.textContent = '★'.repeat(fullStars) + '☆'.repeat(5 - fullStars);
@@ -2334,21 +2397,29 @@ document.querySelector('#year').textContent = new Date().getFullYear();
       attribution.textContent = 'Quelle: Google';
       slider.append(attribution);
       slider.setAttribute('aria-busy', 'false');
+
+      finishGoogleReviewsLoading();
       activateGoogleReviewSlider();
     } catch (error) {
       console.error('Google-Bewertungen konnten nicht geladen werden:', error);
-      slider.replaceChildren();
-      const fallback = document.createElement('p');
-      fallback.className = 'google-review-error';
-      fallback.textContent = 'Die Google-Bewertungen konnten momentan nicht geladen werden. Bitte öffnen Sie Google Maps, um alle Bewertungen zu sehen.';
-      slider.append(fallback);
-      slider.setAttribute('aria-busy', 'false');
+      showGoogleReviewsFallback();
     }
   }
 
   window.initGoogleReviews = initGoogleReviews;
+  window.handleGoogleMapsLoadError = handleGoogleMapsLoadError;
+
+  // Never leave visitors on an endless loading message if Google rejects
+  // the key, billing is missing, or a browser extension blocks Maps.
+  googleReviewsState.timeoutId = window.setTimeout(() => {
+    if (!googleReviewsState.finished) {
+      showGoogleReviewsFallback();
+    }
+  }, 12000);
 </script>
-<script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAjyDscJ-gYb9WHFLsGTx_8XgwTigIxK7U&amp;loading=async&amp;libraries=places&amp;language=de&amp;region=DE&amp;callback=initGoogleReviews"></script>
+<script async
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAjyDscJ-gYb9WHFLsGTx_8XgwTigIxK7U&amp;v=weekly&amp;loading=async&amp;libraries=places&amp;language=de&amp;region=DE&amp;auth_referrer_policy=origin&amp;callback=initGoogleReviews"
+  onerror="handleGoogleMapsLoadError()"></script>
 
 </body>
 </html>
