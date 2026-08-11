@@ -36,7 +36,23 @@
 @media(max-width:700px){
   .page-hero::after{background:linear-gradient(180deg,rgba(25,17,14,.70),rgba(25,17,14,.48))}
 }
-</style></head><body><a class="skip" href="#main">Zum Inhalt springen</a><header class="site-header"><a class="brand" href="index.html" aria-label="ORALC Startseite"><img src="assets/logo.png" alt="ORALC Oralchirurgie und Implantologie"></a><nav class="main-nav" id="main-nav" aria-label="Hauptnavigation">
+</style>
+<style id="remove-doctor-photo-overlay-text">
+/* ORALC: نص التعريف فوق صورة الطبيب محذوف بالكامل */
+.doctor-photo::before,
+.doctor-photo::after {
+  content: none !important;
+  display: none !important;
+}
+.doctor-photo .overlay,
+.doctor-photo .photo-overlay,
+.doctor-photo .doctor-overlay,
+.doctor-photo .caption,
+.doctor-photo figcaption {
+  display: none !important;
+}
+</style>
+</head><body><a class="skip" href="#main">Zum Inhalt springen</a><header class="site-header"><a class="brand" href="index.html" aria-label="ORALC Startseite"><img src="assets/logo.png" alt="ORALC Oralchirurgie und Implantologie"></a><nav class="main-nav" id="main-nav" aria-label="Hauptnavigation">
       <a href="index.html">Start</a>
       <a href="ueber-uns.html" class="active" aria-current="page">Über uns</a>
       <a href="unsere-leistungen.html">Leistungen</a>
@@ -134,67 +150,4 @@
     <strong class="doctolib-float__brand">Doctolib</strong>
   </a>
 </aside><div class="page-noise"></div><script src="assets/site.js"></script>
-<script>
-/* ORALC: Text über dem Arztbild dezent verkleinern (ca. 10 %) */
-(function () {
-  const SCALE = 0.90;
-  const doctorPhoto = document.querySelector('.doctor-photo');
-  const doctorGrid = document.querySelector('.doctor-grid');
-  if (!doctorPhoto || !doctorGrid) return;
-
-  const pseudoStyle = document.createElement('style');
-  pseudoStyle.id = 'doctor-photo-text-size-adjustment';
-  document.head.appendChild(pseudoStyle);
-
-  function overlaps(a, b) {
-    return a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top;
-  }
-
-  function isDoctorLabel(text) {
-    text = (text || '').replace(/\s+/g, ' ').trim();
-    if (!text || text.length > 130) return false;
-    return /Ahmed\s*Saeed|Fachzahnarzt|Oralchirurgie|Implantologie/i.test(text);
-  }
-
-  function shrinkElement(el) {
-    if (!el.dataset.oralcOriginalInlineFontSize) {
-      el.dataset.oralcOriginalInlineFontSize = el.style.fontSize || '__none__';
-    }
-    const original = el.dataset.oralcOriginalInlineFontSize;
-    if (original === '__none__') el.style.removeProperty('font-size');
-    else el.style.fontSize = original;
-
-    const current = parseFloat(getComputedStyle(el).fontSize);
-    if (Number.isFinite(current)) {
-      el.style.setProperty('font-size', (current * SCALE).toFixed(2) + 'px', 'important');
-    }
-  }
-
-  function adjustDoctorPhotoText() {
-    const photoRect = doctorPhoto.getBoundingClientRect();
-
-    doctorGrid.querySelectorAll('*').forEach(function (el) {
-      if (el === doctorPhoto || el.tagName === 'IMG') return;
-      const text = el.textContent;
-      if (!isDoctorLabel(text)) return;
-      const rect = el.getBoundingClientRect();
-      if (rect.width && rect.height && overlaps(rect, photoRect)) shrinkElement(el);
-    });
-
-    const rules = [];
-    ['::before', '::after'].forEach(function (pseudo) {
-      const cs = getComputedStyle(doctorPhoto, pseudo);
-      const content = (cs.content || '').replace(/^['\"]|['\"]$/g, '');
-      if (!isDoctorLabel(content)) return;
-      const size = parseFloat(cs.fontSize);
-      if (Number.isFinite(size)) {
-        rules.push('.doctor-photo' + pseudo + '{font-size:' + (size * SCALE).toFixed(2) + 'px!important;}');
-      }
-    });
-    pseudoStyle.textContent = rules.join('\n');
-  }
-
-  window.addEventListener('load', adjustDoctorPhotoText);
-  window.addEventListener('resize', adjustDoctorPhotoText, { passive: true });
-})();
-</script></body></html>
+</body></html>
