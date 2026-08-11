@@ -134,4 +134,67 @@
     <strong class="doctolib-float__brand">Doctolib</strong>
   </a>
 </aside><div class="page-noise"></div><script src="assets/site.js"></script>
-</body></html>
+<script>
+/* ORALC: Text über dem Arztbild dezent verkleinern (ca. 10 %) */
+(function () {
+  const SCALE = 0.90;
+  const doctorPhoto = document.querySelector('.doctor-photo');
+  const doctorGrid = document.querySelector('.doctor-grid');
+  if (!doctorPhoto || !doctorGrid) return;
+
+  const pseudoStyle = document.createElement('style');
+  pseudoStyle.id = 'doctor-photo-text-size-adjustment';
+  document.head.appendChild(pseudoStyle);
+
+  function overlaps(a, b) {
+    return a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top;
+  }
+
+  function isDoctorLabel(text) {
+    text = (text || '').replace(/\s+/g, ' ').trim();
+    if (!text || text.length > 130) return false;
+    return /Ahmed\s*Saeed|Fachzahnarzt|Oralchirurgie|Implantologie/i.test(text);
+  }
+
+  function shrinkElement(el) {
+    if (!el.dataset.oralcOriginalInlineFontSize) {
+      el.dataset.oralcOriginalInlineFontSize = el.style.fontSize || '__none__';
+    }
+    const original = el.dataset.oralcOriginalInlineFontSize;
+    if (original === '__none__') el.style.removeProperty('font-size');
+    else el.style.fontSize = original;
+
+    const current = parseFloat(getComputedStyle(el).fontSize);
+    if (Number.isFinite(current)) {
+      el.style.setProperty('font-size', (current * SCALE).toFixed(2) + 'px', 'important');
+    }
+  }
+
+  function adjustDoctorPhotoText() {
+    const photoRect = doctorPhoto.getBoundingClientRect();
+
+    doctorGrid.querySelectorAll('*').forEach(function (el) {
+      if (el === doctorPhoto || el.tagName === 'IMG') return;
+      const text = el.textContent;
+      if (!isDoctorLabel(text)) return;
+      const rect = el.getBoundingClientRect();
+      if (rect.width && rect.height && overlaps(rect, photoRect)) shrinkElement(el);
+    });
+
+    const rules = [];
+    ['::before', '::after'].forEach(function (pseudo) {
+      const cs = getComputedStyle(doctorPhoto, pseudo);
+      const content = (cs.content || '').replace(/^['\"]|['\"]$/g, '');
+      if (!isDoctorLabel(content)) return;
+      const size = parseFloat(cs.fontSize);
+      if (Number.isFinite(size)) {
+        rules.push('.doctor-photo' + pseudo + '{font-size:' + (size * SCALE).toFixed(2) + 'px!important;}');
+      }
+    });
+    pseudoStyle.textContent = rules.join('\n');
+  }
+
+  window.addEventListener('load', adjustDoctorPhotoText);
+  window.addEventListener('resize', adjustDoctorPhotoText, { passive: true });
+})();
+</script></body></html>
