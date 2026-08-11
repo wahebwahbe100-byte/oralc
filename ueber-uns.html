@@ -39,13 +39,24 @@
 </style>
 
 <style id="oracl-mobile-final-fix">
-/* Prevent horizontal movement on phones. */
-html, body {
+/* Mobile stability: never allow horizontal page movement. */
+html {
   width: 100% !important;
   max-width: 100% !important;
   overflow-x: hidden !important;
+  overscroll-behavior-x: none;
 }
-*, *::before, *::after { box-sizing: border-box; }
+body {
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow-x: hidden !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+@supports (overflow: clip) {
+  html, body { overflow-x: clip !important; }
+}
+*, *::before, *::after { box-sizing: border-box; min-width: 0; }
 img, video, svg { max-width: 100%; }
 
 /* Keep the doctor image free of HTML overlays. */
@@ -66,54 +77,91 @@ img, video, svg { max-width: 100%; }
 }
 
 @media (max-width: 900px) {
-  /* Keep every major section inside the phone viewport. */
-  .site-header,
-  main,
-  .page-hero,
-  .hero-strip,
-  .section,
-  .container,
-  .site-footer,
-  .location-footer {
+  /* Keep all content inside the phone viewport. */
+  .site-header, main, .page-hero, .hero-strip, .section, .container,
+  .site-footer, .location-footer, .doctor-grid, .card-grid, .focus-grid,
+  .cta-inner, .care-band, .location-footer__info, .location-footer__details {
     width: 100% !important;
     max-width: 100% !important;
+    min-width: 0 !important;
   }
-
-  /* Avoid any old mobile bottom-bar spacing. */
   body { padding-bottom: 0 !important; }
+  .hero-strip { overflow: hidden !important; }
 
-  /* Header booking is replaced by the fixed right-side booking control on mobile. */
+  /* Hide only the header booking link on mobile; use the right-side Doctolib tab instead. */
   .header-book { display: none !important; }
 
-  /* Simple, always-visible booking button on the RIGHT side. */
-  #doctolib-float.doctolib-float {
-    display: block !important;
+  /* Right-side Doctolib booking tab – visible on phones, like the desktop tab. */
+  #doctolib-float.doctolib-float,
+  #doctolib-float.doctolib-float.is-collapsed,
+  #doctolib-float.doctolib-float[aria-hidden="true"] {
+    display: flex !important;
     visibility: visible !important;
     opacity: 1 !important;
     pointer-events: auto !important;
     position: fixed !important;
-    top: 50% !important;
-    right: 8px !important;
+    top: 58% !important;
+    right: 0 !important;
     bottom: auto !important;
     left: auto !important;
-    inset: auto 8px auto auto !important;
+    inset: auto 0 auto auto !important;
     transform: translateY(-50%) !important;
-    width: 132px !important;
-    min-width: 0 !important;
-    max-width: calc(100vw - 16px) !important;
-    height: auto !important;
+    flex-direction: row !important;
+    align-items: stretch !important;
+    justify-content: flex-end !important;
+    width: 110px !important;
+    max-width: 110px !important;
+    height: 124px !important;
+    min-height: 124px !important;
     margin: 0 !important;
     padding: 0 !important;
-    overflow: visible !important;
+    overflow: hidden !important;
+    border-radius: 10px 0 0 10px !important;
+    background: #0aa9e8 !important;
+    box-shadow: 0 5px 18px rgba(0,0,0,.20) !important;
     z-index: 2147483000 !important;
   }
 
-  /* Remove the collapsing arrow so JS cannot hide the booking text. */
   #doctolib-float .doctolib-float__toggle {
-    display: none !important;
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    flex: 0 0 29px !important;
+    width: 29px !important;
+    height: 124px !important;
+    min-width: 29px !important;
+    min-height: 124px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border: 0 !important;
+    border-right: 1px solid rgba(255,255,255,.28) !important;
+    border-radius: 10px 0 0 10px !important;
+    background: #0aa9e8 !important;
+    color: #fff !important;
+    box-shadow: none !important;
+    transform: none !important;
+    cursor: default !important;
+    pointer-events: none !important; /* keeps the booking tab from being accidentally hidden */
+  }
+  #doctolib-float .doctolib-float__toggle svg {
+    display: block !important;
+    width: 14px !important;
+    height: 14px !important;
+    overflow: visible !important;
+    transform: rotate(180deg) !important;
+  }
+  #doctolib-float .doctolib-float__toggle svg path {
+    fill: none !important;
+    stroke: #fff !important;
+    stroke-width: 2 !important;
+    stroke-linecap: round !important;
+    stroke-linejoin: round !important;
   }
 
-  #doctolib-float .doctolib-float__link {
+  #doctolib-float .doctolib-float__link,
+  #doctolib-float.is-collapsed .doctolib-float__link {
     display: flex !important;
     visibility: visible !important;
     opacity: 1 !important;
@@ -121,24 +169,26 @@ img, video, svg { max-width: 100%; }
     position: static !important;
     inset: auto !important;
     transform: none !important;
-    width: 132px !important;
-    min-width: 0 !important;
-    max-width: 100% !important;
-    min-height: 52px !important;
+    flex: 1 1 auto !important;
+    width: 81px !important;
+    max-width: 81px !important;
+    height: 124px !important;
+    min-height: 124px !important;
     margin: 0 !important;
-    padding: 10px 12px !important;
+    padding: 13px 6px 11px !important;
     align-items: center !important;
     justify-content: center !important;
     flex-direction: column !important;
-    gap: 2px !important;
+    gap: 8px !important;
     text-align: center !important;
     text-decoration: none !important;
     white-space: normal !important;
-    overflow-wrap: anywhere !important;
-    border-radius: 12px !important;
-    background: #34231d !important;
+    overflow: hidden !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: #0aa9e8 !important;
     color: #fff !important;
-    box-shadow: 0 8px 24px rgba(0,0,0,.22) !important;
+    box-shadow: none !important;
   }
 
   #doctolib-float .doctolib-float__label,
@@ -146,36 +196,49 @@ img, video, svg { max-width: 100%; }
     display: block !important;
     visibility: visible !important;
     opacity: 1 !important;
+    width: 100% !important;
     max-width: 100% !important;
+    margin: 0 !important;
     color: #fff !important;
-    line-height: 1.15 !important;
+    text-align: center !important;
+    overflow-wrap: normal !important;
+    word-break: normal !important;
   }
-  #doctolib-float .doctolib-float__label { font-size: 13px !important; }
-  #doctolib-float .doctolib-float__brand { font-size: 12px !important; }
-
-  /* Common overflow sources on narrow screens. */
-  .hero-strip { overflow: hidden !important; }
-  .doctor-grid,
-  .card-grid,
-  .focus-grid,
-  .cta-inner,
-  .care-band,
-  .location-footer__info,
-  .location-footer__details {
-    max-width: 100% !important;
-    min-width: 0 !important;
+  #doctolib-float .doctolib-float__label {
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    line-height: 1.28 !important;
+  }
+  #doctolib-float .doctolib-float__brand {
+    font-size: 12px !important;
+    font-style: italic !important;
+    font-weight: 700 !important;
+    line-height: 1.1 !important;
+  }
+  #doctolib-float .doctolib-float__brand::before {
+    content: "⌁ " !important;
+    font-style: normal !important;
+    font-size: 16px !important;
+    vertical-align: -1px !important;
   }
 }
 
-@media (max-width: 420px) {
+@media (max-width: 380px) {
   #doctolib-float.doctolib-float,
-  #doctolib-float .doctolib-float__link {
-    width: 118px !important;
+  #doctolib-float.doctolib-float.is-collapsed,
+  #doctolib-float.doctolib-float[aria-hidden="true"] {
+    width: 104px !important;
+    max-width: 104px !important;
   }
-  #doctolib-float.doctolib-float {
-    right: 6px !important;
-    inset: auto 6px auto auto !important;
-    max-width: calc(100vw - 12px) !important;
+  #doctolib-float .doctolib-float__toggle {
+    flex-basis: 27px !important;
+    width: 27px !important;
+    min-width: 27px !important;
+  }
+  #doctolib-float .doctolib-float__link,
+  #doctolib-float.is-collapsed .doctolib-float__link {
+    width: 77px !important;
+    max-width: 77px !important;
   }
 }
 </style>
