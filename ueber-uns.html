@@ -242,6 +242,109 @@ img, video, svg { max-width: 100%; }
   }
 }
 </style>
+
+<style id="mobile-doctolib-guaranteed-style">
+/* FINAL MOBILE FIX: stable viewport + independent booking button. */
+html, body {
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow-x: hidden !important;
+  overscroll-behavior-x: none !important;
+}
+@supports (overflow: clip) {
+  html, body { overflow-x: clip !important; }
+}
+body { margin-left: 0 !important; margin-right: 0 !important; }
+
+/* This button is intentionally independent of the site's existing Doctolib widget/classes,
+   so site.js cannot collapse or hide it. */
+#mobile-doctolib-booking {
+  display: none;
+}
+@media (max-width: 900px) {
+  .header-book { display: none !important; }
+  #mobile-doctolib-booking {
+    display: flex !important;
+    position: fixed !important;
+    top: 50% !important;
+    right: 0 !important;
+    left: auto !important;
+    bottom: auto !important;
+    transform: translateY(-50%) !important;
+    width: 110px !important;
+    height: 124px !important;
+    max-width: calc(100vw - 8px) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    z-index: 2147483646 !important;
+    border-radius: 11px 0 0 11px !important;
+    overflow: hidden !important;
+    background: #0aa9e8 !important;
+    box-shadow: 0 6px 22px rgba(0,0,0,.22) !important;
+    color: #fff !important;
+    text-decoration: none !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    isolation: isolate !important;
+    -webkit-tap-highlight-color: transparent !important;
+  }
+  #mobile-doctolib-booking .mdb-arrow {
+    flex: 0 0 29px !important;
+    width: 29px !important;
+    height: 124px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-right: 1px solid rgba(255,255,255,.32) !important;
+    font-size: 24px !important;
+    line-height: 1 !important;
+    font-weight: 300 !important;
+    color: #fff !important;
+  }
+  #mobile-doctolib-booking .mdb-copy {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    height: 124px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 7px !important;
+    padding: 10px 6px !important;
+    text-align: center !important;
+    color: #fff !important;
+  }
+  #mobile-doctolib-booking .mdb-label {
+    display: block !important;
+    color: #fff !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    line-height: 1.28 !important;
+    white-space: normal !important;
+  }
+  #mobile-doctolib-booking .mdb-brand {
+    display: block !important;
+    color: #fff !important;
+    font-size: 12px !important;
+    font-style: italic !important;
+    font-weight: 700 !important;
+    line-height: 1.1 !important;
+    white-space: nowrap !important;
+  }
+  #mobile-doctolib-booking .mdb-brand::before {
+    content: "⌁ " !important;
+    font-size: 16px !important;
+    font-style: normal !important;
+    vertical-align: -1px !important;
+  }
+}
+@media (max-width: 360px) {
+  #mobile-doctolib-booking { width: 104px !important; height: 116px !important; }
+  #mobile-doctolib-booking .mdb-arrow { flex-basis: 27px !important; width:27px !important; height:116px !important; }
+  #mobile-doctolib-booking .mdb-copy { height:116px !important; }
+  #mobile-doctolib-booking .mdb-label { font-size:13px !important; }
+}
+</style>
+
 </head><body><a class="skip" href="#main">Zum Inhalt springen</a><header class="site-header"><a class="brand" href="index.html" aria-label="ORALC Startseite"><img src="assets/logo.png" alt="ORALC Oralchirurgie und Implantologie"></a><nav class="main-nav" id="main-nav" aria-label="Hauptnavigation">
       <a href="index.html">Start</a>
       <a href="ueber-uns.html" class="active" aria-current="page">Über uns</a>
@@ -329,15 +432,49 @@ img, video, svg { max-width: 100%; }
     <div class="location-footer__bottom">
       <p>© 2026 ORALC Fachpraxis · Alle Rechte vorbehalten.</p>
     </div>
-  </footer><aside class="doctolib-float" id="doctolib-float" aria-label="Online-Terminbuchung">
-  <button class="doctolib-float__toggle" type="button" aria-controls="doctolib-booking-link" aria-expanded="true" aria-label="Online-Terminleiste schließen">
-    <svg aria-hidden="true" viewBox="0 0 24 24" focusable="false">
-      <path d="M9 5l7 7-7 7" />
-    </svg>
-  </button>
-  <a class="doctolib-float__link" id="doctolib-booking-link" href="https://www.doctolib.de/zahnarztpraxis/berlin/oralchirurgie-warschauer-strasse-ihre-fachzahnaerzte-fuer-oralchirurgie" target="_blank" rel="noopener" aria-label="Termin online über Doctolib buchen">
-    <span class="doctolib-float__label">Termin online buchen</span>
-    <strong class="doctolib-float__brand">Doctolib</strong>
-  </a>
-</aside><div class="page-noise"></div><script src="assets/site.js"></script>
+  </footer><div class="page-noise"></div><script src="assets/site.js"></script>
+
+<a id="mobile-doctolib-booking"
+   href="https://www.doctolib.de/zahnarztpraxis/berlin/oralchirurgie-warschauer-strasse-ihre-fachzahnaerzte-fuer-oralchirurgie"
+   target="_blank" rel="noopener"
+   aria-label="Termin online über Doctolib buchen">
+  <span class="mdb-arrow" aria-hidden="true">‹</span>
+  <span class="mdb-copy">
+    <span class="mdb-label">Termin<br>online<br>buchen</span>
+    <strong class="mdb-brand">Doctolib</strong>
+  </span>
+</a>
+<script id="mobile-doctolib-guard">
+(function () {
+  function enforceMobileBooking() {
+    var el = document.getElementById('mobile-doctolib-booking');
+    if (!el) return;
+    if (window.matchMedia('(max-width: 900px)').matches) {
+      el.style.setProperty('display','flex','important');
+      el.style.setProperty('position','fixed','important');
+      el.style.setProperty('right','0','important');
+      el.style.setProperty('left','auto','important');
+      el.style.setProperty('top','50%','important');
+      el.style.setProperty('bottom','auto','important');
+      el.style.setProperty('transform','translateY(-50%)','important');
+      el.style.setProperty('visibility','visible','important');
+      el.style.setProperty('opacity','1','important');
+      el.style.setProperty('pointer-events','auto','important');
+      el.style.setProperty('z-index','2147483646','important');
+    } else {
+      el.style.setProperty('display','none','important');
+    }
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', enforceMobileBooking, {once:true});
+  } else {
+    enforceMobileBooking();
+  }
+  window.addEventListener('load', enforceMobileBooking, {once:true});
+  window.addEventListener('resize', enforceMobileBooking, {passive:true});
+  setTimeout(enforceMobileBooking, 250);
+  setTimeout(enforceMobileBooking, 1200);
+})();
+</script>
+
 </body></html>
