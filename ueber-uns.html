@@ -91,6 +91,82 @@
   }
 }
 </style>
+
+<style id="oracl-mobile-booking-right-v2">
+/* Mobile/tablet: keep the online booking tab on the RIGHT side, never as a bottom bar. */
+@media (max-width: 900px) {
+  body {
+    padding-bottom: 0 !important;
+  }
+
+  #doctolib-float.doctolib-float {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    position: fixed !important;
+    top: 50% !important;
+    right: 0 !important;
+    bottom: auto !important;
+    left: auto !important;
+    inset: auto 0 auto auto !important;
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: calc(100vw - 8px) !important;
+    height: auto !important;
+    margin: 0 !important;
+    flex-direction: row !important;
+    align-items: stretch !important;
+    justify-content: flex-end !important;
+    transform: translateY(-50%) !important;
+    z-index: 99999 !important;
+  }
+
+  #doctolib-float .doctolib-float__toggle {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    position: static !important;
+    inset: auto !important;
+    flex: 0 0 auto !important;
+    transform: none !important;
+  }
+
+  #doctolib-float .doctolib-float__link {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    position: static !important;
+    inset: auto !important;
+    width: auto !important;
+    min-width: 118px !important;
+    max-width: 150px !important;
+    height: auto !important;
+    margin: 0 !important;
+    flex: 0 1 auto !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    justify-content: center !important;
+    transform: none !important;
+    pointer-events: auto !important;
+  }
+
+  #doctolib-float .doctolib-float__label,
+  #doctolib-float .doctolib-float__brand {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+}
+
+/* Very small phones: keep it compact but still attached to the right edge. */
+@media (max-width: 420px) {
+  #doctolib-float .doctolib-float__link {
+    min-width: 105px !important;
+    max-width: 126px !important;
+  }
+}
+</style>
 </head><body><a class="skip" href="#main">Zum Inhalt springen</a><header class="site-header"><a class="brand" href="index.html" aria-label="ORALC Startseite"><img src="assets/logo.png" alt="ORALC Oralchirurgie und Implantologie"></a><nav class="main-nav" id="main-nav" aria-label="Hauptnavigation">
       <a href="index.html">Start</a>
       <a href="ueber-uns.html" class="active" aria-current="page">Über uns</a>
